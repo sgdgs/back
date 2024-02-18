@@ -1,7 +1,12 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, ObjectId } from 'mongoose'
 
 const schema = new Schema({
-  Date: {
+  user: {
+    type: ObjectId,
+    ref: 'users',
+    required: [true, '缺少使用者']
+  },
+  date: {
     type: Date,
     required: [true, '缺少預約日期']
   },

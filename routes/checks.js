@@ -4,7 +4,7 @@ import { get, edit } from '../controllers/checks.js'
 
 const router = Router()
 
-router.get('/reservations', get)
+router.get('/checks', get)
 router.patch('/:id', auth.jwt, edit)
 
 export default router
