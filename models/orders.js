@@ -21,7 +21,7 @@ const schema = new Schema({
   cart: {
     type: [cartSchema],
     validate: {
-      validator (value) {
+      validator(value) {
         return Array.isArray(value) && value.length > 0
       },
       message: '購物車不能為空'

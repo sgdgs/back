@@ -1,11 +1,10 @@
 import 'dotenv/config'
 import express from 'express'
-import mongoose from 'mongoose'
+import { mongoose, ObjectId } from 'mongoose'
 import cors from 'cors'
 import routeUsers from './routes/users.js'
 import routeProducts from './routes/products.js'
 import routeOrders from './routes/orders.js'
-// import routeReserves from './routes/reserves.js'
 import { StatusCodes } from 'http-status-codes'
 import mongoSanitize from 'express-mongo-sanitize'
 import './passport/passport.js'
@@ -27,43 +26,61 @@ app.use(cors({
 app.use(express.json())
 app.use(mongoSanitize())
 
-// const Reservation = mongoose.model('Reservation', new mongoose.Schema({
-//   date: Date,
-//   name: String,
-//   phone: String,
-//   service: String
-// }))
+const Reservation = mongoose.model('Reservation', new mongoose.Schema({
+  // user: {
+  //   type: ObjectId,
+  //   ref: 'users',
+  //   required: [true, '缺少使用者']
+  // },
+  date: {
+    type: Date,
+    required: [true, '缺少日期']
+  },
+  name: {
+    type: String,
+    required: [true, '缺少姓名']
+  },
+  phone: {
+    type: String,
+    required: [true, '缺少電話']
+  },
+  service: {
+    type: String,
+    required: [true, '缺少服務']
+  }
+}))
 
-// app.post('/reservations', async (req, res) => {
-//   const reservation = new Reservation(req.body)
-//   await reservation.save()
-//   res.send(reservation)
-// })
+app.post('/reservations', async (req, res) => {
+  const reservation = new Reservation(req.body)
+  await reservation.save()
+  res.send(reservation)
+  console.log(reservation)
+})
 
-// app.delete('/reservations/:id', async (req, res) => {
-//   try {
-//     const { id } = req.params
-//     await Reservation.findByIdAndDelete(id)
-//     res.status(200).send({ message: 'Reservation deleted successfully' })
-//   } catch (error) {
-//     res.status(500).send({ message: 'Error deleting reservation' })
-//   }
-// })
+app.delete('/reservations/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    await Reservation.findByIdAndDelete(id)
+    res.status(200).send({ message: 'Reservation deleted successfully' })
+  } catch (error) {
+    res.status(500).send({ message: 'Error deleting reservation' })
+  }
+})
 
-// app.get('/reservations', async (req, res) => {
-//   const reservations = await Reservation.find()
-//   res.send(reservations)
-// })
+app.get('/reservations', async (req, res) => {
+  const reservations = await Reservation.find()
+  res.send(reservations)
+})
 
-// app.get('/reservations/:id', async (req, res) => {
-//   try {
-//     const { id } = req.params
-//     const reservation = await Reservation.findById(id)
-//     res.send(reservation)
-//   } catch (error) {
-//     res.status(404).send({ message: 'Reservation not found' })
-//   }
-// })
+app.get('/reservations/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const reservation = await Reservation.findById(id)
+    res.send(reservation)
+  } catch (error) {
+    res.status(404).send({ message: 'Reservation not found' })
+  }
+})
 
 app.use((_, req, res, next) => {
   res.status(StatusCodes.FORBIDDEN).json({
@@ -82,7 +99,6 @@ app.use((_, req, res, next) => {
 app.use('/users', routeUsers)
 app.use('/products', routeProducts)
 app.use('/orders', routeOrders)
-// app.use('/reserves', routeReserves)
 
 app.all('*', (req, res) => {
   res.status(StatusCodes.NOT_FOUND).json({
