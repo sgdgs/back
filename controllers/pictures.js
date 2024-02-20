@@ -1,11 +1,11 @@
-import products from '../models/products.js'
+import pictures from '../models/pictures.js'
 import { StatusCodes } from 'http-status-codes'
 import validator from 'validator'
 
 export const create = async (req, res) => {
   try {
     req.body.image = req.file.path
-    const result = await products.create(req.body)
+    const result = await pictures.create(req.body)
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
@@ -36,7 +36,7 @@ export const getAll = async (req, res) => {
     const page = parseInt(req.query.page) || 1
     const regex = new RegExp(req.query.search || '', 'i')
 
-    const data = await products
+    const data = await pictures
       .find({
         $or: [
           { name: regex },
@@ -55,7 +55,7 @@ export const getAll = async (req, res) => {
       .limit(itemsPerPage === -1 ? undefined : itemsPerPage)
 
     // estimatedDocumentCount() 計算總資料數
-    const total = await products.estimatedDocumentCount()
+    const total = await pictures.estimatedDocumentCount()
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
@@ -80,7 +80,7 @@ export const get = async (req, res) => {
     const page = parseInt(req.query.page) || 1
     const regex = new RegExp(req.query.search || '', 'i')
 
-    const data = await products
+    const data = await pictures
       .find({
         sell: true,
         $or: [
@@ -100,7 +100,7 @@ export const get = async (req, res) => {
       .limit(itemsPerPage === -1 ? undefined : itemsPerPage)
 
     // countDocuments() 依照 () 內篩選計算總資料數
-    const total = await products.countDocuments({ sell: true })
+    const total = await pictures.countDocuments({ sell: true })
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
@@ -121,7 +121,7 @@ export const getId = async (req, res) => {
   try {
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
 
-    const result = await products.findById(req.params.id)
+    const result = await pictures.findById(req.params.id)
 
     if (!result) throw new Error('NOT FOUND')
 
@@ -155,7 +155,7 @@ export const edit = async (req, res) => {
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
 
     req.body.image = req.file?.path
-    await products.findByIdAndUpdate(req.params.id, req.body, { runValidators: true }).orFail(new Error('NOT FOUND'))
+    await pictures.findByIdAndUpdate(req.params.id, req.body, { runValidators: true }).orFail(new Error('NOT FOUND'))
 
     res.status(StatusCodes.OK).json({
       success: true,
@@ -192,7 +192,7 @@ export const remove = async (req, res) => {
   try {
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
 
-    await products.findByIdAndDelete(req.params.id).orFail(new Error('NOT FOUND'))
+    await pictures.findByIdAndDelete(req.params.id).orFail(new Error('NOT FOUND'))
 
     res.status(StatusCodes.OK).json({
       success: true,

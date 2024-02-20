@@ -5,6 +5,8 @@ import cors from 'cors'
 import routeUsers from './routes/users.js'
 import routeProducts from './routes/products.js'
 import routeOrders from './routes/orders.js'
+// import routeReserve from './routes/reservations.js'
+import routePictures from './routes/pictures.js'
 import { StatusCodes } from 'http-status-codes'
 import mongoSanitize from 'express-mongo-sanitize'
 import './passport/passport.js'
@@ -27,11 +29,6 @@ app.use(express.json())
 app.use(mongoSanitize())
 
 const Reservation = mongoose.model('Reservation', new mongoose.Schema({
-  // user: {
-  //   type: ObjectId,
-  //   ref: 'users',
-  //   required: [true, '缺少使用者']
-  // },
   date: {
     type: Date,
     required: [true, '缺少日期']
@@ -74,9 +71,12 @@ app.get('/reservations', async (req, res) => {
 
 app.get('/reservations/:id', async (req, res) => {
   try {
-    const { id } = req.params
-    const reservation = await Reservation.findById(id)
-    res.send(reservation)
+    const result = await Reservation.find({ user: req.user._id })
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: '',
+      result
+    })
   } catch (error) {
     res.status(404).send({ message: 'Reservation not found' })
   }
@@ -99,6 +99,8 @@ app.use((_, req, res, next) => {
 app.use('/users', routeUsers)
 app.use('/products', routeProducts)
 app.use('/orders', routeOrders)
+app.use('/pictures', routePictures)
+// app.use('/reserve', routeReserve)
 
 app.all('*', (req, res) => {
   res.status(StatusCodes.NOT_FOUND).json({

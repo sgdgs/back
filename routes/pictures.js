@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import * as auth from '../middlewares/auth.js'
-import { create, getAll, edit, get, getId, remove } from '../controllers/products.js'
+import { create, getAll, edit, get, getId, remove } from '../controllers/pictures.js'
 import upload from '../middlewares/upload.js'
 import admin from '../middlewares/admin.js'
 
