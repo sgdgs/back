@@ -1,11 +1,5 @@
-import { Schema, model } from 'mongoose'
-
-const schema = new Schema({
-  // user: {
-  //   type: ObjectId,
-  //   ref: 'users',
-  //   required: [true, '缺少使用者']
-  // },
+import { mongoose, ObjectId } from 'mongoose'
+const schema = new mongoose.Schema({
   date: {
     type: Date,
     required: [true, '缺少日期']
@@ -21,7 +15,12 @@ const schema = new Schema({
   service: {
     type: String,
     required: [true, '缺少服務']
+  },
+  user: {
+    type: ObjectId,
+    ref: 'users',
+    required: [true, '缺少使用者']
   }
 })
 
-export default model('reserve', schema)
+export default mongoose.model('reserve', schema)

@@ -4,9 +4,9 @@ import { create, remove, list, get } from '../controllers/reservations.js'
 
 const router = Router()
 
-router.post('/create', auth.jwt, create)
-router.delete('/:id', auth.jwt, remove)
-router.get('/', auth.jwt, list)
-router.get('/:id', auth.jwt, get)
+router.post('/', auth.jwt, create)
+router.delete('/:id', remove)
+router.get('/', list)
+router.get('/me', auth.jwt, get)
 
 export default router
