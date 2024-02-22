@@ -112,11 +112,20 @@ export const getProfile = (req, res) => {
   }
 }
 
-export const updatePassword = async (account, newPassword) => {
-  const user = await users.findOne({ account })
-  user.password = newPassword
-  await user.save()
-  return user
+export const updatePassword = async (req, res) => {
+  try {
+    req.user.password = req.body.newPassword
+    await req.user.save()
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: '密碼更新成功'
+    })
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: '密碼更新失敗'
+    })
+  }
 }
 
 export const changePassword = async (req, res) => {

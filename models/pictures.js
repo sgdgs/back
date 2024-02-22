@@ -4,6 +4,10 @@ const schema = new Schema({
   image: {
     type: String,
     required: [true, '缺少商品圖片']
+  },
+  name: {
+    type: String,
+    required: [true, '缺少商品名稱']
   }
   // description: {
   //   type: String,
