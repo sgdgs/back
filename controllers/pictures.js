@@ -217,3 +217,29 @@ export const remove = async (req, res) => {
     }
   }
 }
+
+export const getUrl = async (req, res) => {
+  try {
+    const result = await pictures.findById(req.params.id)
+
+    if (!result) throw new Error('NOT FOUND')
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: '',
+      result: result.image
+    })
+  } catch (error) {
+    if (error.message === 'NOT FOUND') {
+      res.status(StatusCodes.NOT_FOUND).json({
+        success: false,
+        message: '查無商品'
+      })
+    } else {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: '未知錯誤'
+      })
+    }
+  }
+}
