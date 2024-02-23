@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import express from 'express'
-import { mongoose, ObjectId } from 'mongoose'
+import { mongoose } from 'mongoose'
 import cors from 'cors'
 import routeUsers from './routes/users.js'
 import routeProducts from './routes/products.js'
@@ -27,60 +27,6 @@ app.use(cors({
 
 app.use(express.json())
 app.use(mongoSanitize())
-
-// const Reservation = mongoose.model('Reservation', new mongoose.Schema({
-//   date: {
-//     type: Date,
-//     required: [true, '缺少日期']
-//   },
-//   name: {
-//     type: String,
-//     required: [true, '缺少姓名']
-//   },
-//   phone: {
-//     type: String,
-//     required: [true, '缺少電話']
-//   },
-//   service: {
-//     type: String,
-//     required: [true, '缺少服務']
-//   }
-// }))
-
-// app.post('/reservations', async (req, res) => {
-//   const reservation = new Reservation(req.body)
-//   await reservation.save()
-//   res.send(reservation)
-//   console.log(reservation)
-// })
-
-// app.delete('/reservations/:id', async (req, res) => {
-//   try {
-//     const { id } = req.params
-//     await Reservation.findByIdAndDelete(id)
-//     res.status(200).send({ message: 'Reservation deleted successfully' })
-//   } catch (error) {
-//     res.status(500).send({ message: 'Error deleting reservation' })
-//   }
-// })
-
-// app.get('/reservations', async (req, res) => {
-//   const reservations = await Reservation.find()
-//   res.send(reservations)
-// })
-
-// app.get('/reservations/:id', async (req, res) => {
-//   try {
-//     const result = await Reservation.find({ user: req.user._id })
-//     res.status(StatusCodes.OK).json({
-//       success: true,
-//       message: '',
-//       result
-//     })
-//   } catch (error) {
-//     res.status(404).send({ message: 'Reservation not found' })
-//   }
-// })
 
 app.use((_, req, res, next) => {
   res.status(StatusCodes.FORBIDDEN).json({
